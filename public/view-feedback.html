@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Feedback</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  // view-feedback.html
+  <table>
+    <tr>
+      <th>Student Name</th>
+      <th>Department Name</th>
+      <th>Matric Number</th>
+      <th>Level</th>
+      <th>Assignment</th>
+      <th>Download</th>
+      <th>View Status</th>
+    </tr>
+    <tbody id="feedback-table-body">
+    </tbody>
+  </table>
+  
+  <script>
+    fetch('/view-feedback')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.getElementById('feedback-table-body');
+        data.forEach((assignment) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${assignment.studentName}</td>
+            <td>${assignment.departmentName}</td>
+            <td>${assignment.matricNumber}</td>
+            <td>${assignment.level}</td>
+            <td>${assignment.assignment}</td>
+            <td><a href="/download-assignment/${assignment.id}">Download Assignment</a></td>
+            <td><button class="view-status" data-id="${assignment.id}">View Status</button></td>
+          `;
+          tableBody.appendChild(row);
+        });
+  
+        const viewStatusButtons = document.querySelectorAll('.view-status');
+        viewStatusButtons.forEach((button) => {
+          button.addEventListener('click', (event) => {
+            const id = event.target.getAttribute('data-id');
+            fetch(`/update-status/${id}`, { method: 'POST' })
+              .then(response => response.json())
+              .then(data => {
+                console.log('Status updated successfully');
+              })
+              .catch(error => console.error('Error updating status:', error));
+          });
+        });
+      })
+      .catch(error => console.error('Error fetching assignments:', error));
+   </script>
+</body>
+</html>

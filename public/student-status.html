@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>student-status</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  
+  // student-status.html
+  <h1>Student Status</h1>
+  <table>
+    <tr>
+      <th>Student Name</th>
+      <th>Matric Number</th>
+      <th>Level</th>
+      <th>Status</th>
+    </tr>
+    <tbody id="status-table-body">
+    </tbody>
+  </table>
+  
+  <script>
+    fetch('/student-status')
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.getElementById('status-table-body');
+        data.forEach((student) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${student.studentName}</td>
+            <td>${student.matricNumber}</td>
+            <td>${student.level}</td>
+            <td>${student.status}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error fetching student status:', error));
+  </script>  
+</body>
+  </html>
