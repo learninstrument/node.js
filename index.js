@@ -1,16 +1,16 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
 // Set up MySQL connection
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'Submission'
+    host: 'sql.freedb.tech',
+    user: 'freedb_submission-user',
+    password: 'Q!&ej9Wcr$D6k8w',
+    database: 'freedb_submission'
 });
 
 db.connect((err) => {
