@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql2');
 const multer = require('multer');
+const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config()
-
+app.use(cors());
 // Set up MySQL connection
 const db = mysql.createConnection({
     // host: 'sql.freedb.tech',
@@ -42,6 +43,16 @@ if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
 
+app.get('/test-db', (req, res) => {
+  const query = 'SELECT * FROM assignments LIMIT 10'; // Adjust the query as needed
+  db.query(query, (err, results) => {
+      if (err) {
+          console.error('Error retrieving data:', err);
+          return res.status(500).json({ message: 'Error retrieving data' });
+      }
+      return res.json(results);
+  });
+});
 
 const upload = multer({
     dest: './uploads/',
