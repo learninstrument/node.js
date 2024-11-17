@@ -34,6 +34,15 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+const uploadsDir = path.join('/tmp', 'uploads');
+
+
+// Create the uploads directory if it doesn't exist
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
+
+
 const upload = multer({
     dest: './uploads/',
     limits: { fileSize: 1000000 },
