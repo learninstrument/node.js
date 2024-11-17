@@ -4,13 +4,19 @@ const mysql = require('mysql2');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config()
 
 // Set up MySQL connection
 const db = mysql.createConnection({
-    host: 'sql.freedb.tech',
-    user: 'freedb_submission-user',
-    password: 'Q!&ej9Wcr$D6k8w',
-    database: 'freedb_submission'
+    // host: 'sql.freedb.tech',
+    // user: 'freedb_submission-user',
+    // password: 'Q!&ej9Wcr$D6k8w',
+    // database: 'freedb_submission'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+
 });
 
 db.connect((err) => {
