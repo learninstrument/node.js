@@ -35,24 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-const uploadsDir = path.join('/tmp', 'uploads');
 
-
-// Create the uploads directory if it doesn't exist
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
-
-app.get('/test-db', (req, res) => {
-  const query = 'SELECT * FROM assignments LIMIT 10'; // Adjust the query as needed
-  db.query(query, (err, results) => {
-      if (err) {
-          console.error('Error retrieving data:', err);
-          return res.status(500).json({ message: 'Error retrieving data' });
-      }
-      return res.json(results);
-  });
-});
 
 const upload = multer({
     dest: './uploads/',
