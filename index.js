@@ -78,6 +78,20 @@ app.post('/submit-assignment', upload.single('assignment'), (req, res) => {
                 console.error('Error inserting data:', err);
                 return res.json({ success: false, message: 'Error inserting data' });
             }
+
+            console.log(`Assignment submitted successfully: ${req.file.path}`);
+
+            // Set a timeout to delete the file after 2 minutes
+            setTimeout(() => {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error('Error deleting file:', err);
+                    } else {
+                        console.log(`File deleted: ${req.file.path}`);
+                    }
+                });
+            }, 2 * 60 * 1000); // 2 minutes in milliseconds
+            
             res.json({ success: true, message: 'Assignment submitted successfully' });
         });
     });
@@ -135,7 +149,7 @@ app.post('/update-status/:id', (req, res) => {
 });
 
 // Handle download assignment
-app.get('/download-assignment/: id', (req, res) => {
+app.get('/download-assignment/:id', (req, res) => {
     const id = req.params.id;
     const query = 'SELECT * FROM assignments WHERE id = ?';
     pool.query(query, [id], (err, results) => {
