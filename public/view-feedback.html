@@ -4,32 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Feedback</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    table {
-      border-collapse: collapse;
+    body {
+      padding: 20px;
+      background-color: #f8f9fa; /* Light background color */
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+    .table th {
+      background-color: #007bff; /* Bootstrap primary color */
+      color: white; /* White text for the header */
+    }
+    .table td {
+      background-color: #ffffff; /* White background for table cells */
+    }
+    .table tr:hover {
+      background-color: #e9ecef; /* Light gray on hover */
+    }
+    .status-updated {
+      background-color: #d4edda; /* Light green for updated status */
+      color: #155724; /* Dark green text */
+    }
+    .status-pending {
+      background-color: #fff3cd; /* Light yellow for pending status */
+      color: #856404; /* Dark yellow text */
     }
   </style>
 </head>
 <body>
-  // view-feedback.html
-  <table>
-    <tr>
-      <th>Student Name</th>
-      <th>Department Name</th>
-      <th>Matric Number</th>
-      <th>Level</th>
-      <th>Assignment</th>
-      <th>Download</th>
-      <th>View Status</th>
-    </tr>
-    <tbody id="feedback-table-body">
-    </tbody>
-  </table>
-  
+
+  <div class="container">
+    <h1 class="text-center">View Feedback</h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Department Name</th>
+          <th>Matric Number</th>
+          <th>Level</th>
+          <th>Assignment</th>
+          <th>Download</th>
+          <th>View Status</th>
+        </tr>
+      </thead>
+      <tbody id="feedback-table-body">
+      </tbody>
+    </table>
+  </div>
+
   <script>
     fetch('/view-feedback')
       .then(response => response.json())
@@ -43,12 +65,14 @@
             <td>${assignment.matricNumber}</td>
             <td>${assignment.level}</td>
             <td>${assignment.assignment}</td>
-            <td><a href="/download-assignment/${assignment.id}">Download Assignment</a></td>
-            <td><button class="view-status" data-id="${assignment.id}">View Status</button></td>
+            <td><a href="/download-assignment/${assignment.id}" class="btn btn-primary">Download Assignment</a></td>
+            <td>
+              <button class="btn btn-info view-status" data-id="${assignment.id}">View Status</button>
+            </td>
           `;
           tableBody.appendChild(row);
         });
-  
+
         const viewStatusButtons = document.querySelectorAll('.view-status');
         viewStatusButtons.forEach((button) => {
           button.addEventListener('click', (event) => {
@@ -57,12 +81,18 @@
               .then(response => response.json())
               .then(data => {
                 console.log('Status updated successfully');
+                // Optionally update the row's status cell here
               })
               .catch(error => console.error('Error updating status:', error));
           });
         });
       })
       .catch(error => console.error('Error fetching assignments:', error));
-   </script>
+  </script>
+
+  <!-- Bootstrap JS and dependencies (optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
