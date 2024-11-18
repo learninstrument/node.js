@@ -3,33 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>student-status</title>
+  <title>Student Status</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    table {
-      border-collapse: collapse;
+    body {
+      padding: 20px;
+      background-color: #f8f9fa; /* Light background color */
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+    .table th {
+      background-color: #007bff; /* Bootstrap primary color */
+      color: white; /* White text for the header */
+    }
+    .table td {
+      background-color: #ffffff; /* White background for table cells */
+    }
+    .table tr:hover {
+      background-color: #e9ecef; /* Light gray on hover */
+    }
+    .status-pass {
+      background-color: #d4edda; /* Light green for pass status */
+      color: #155724; /* Dark green text */
+    }
+    .status-fail {
+      background-color: #f8d7da; /* Light red for fail status */
+      color: #721c24; /* Dark red text */
     }
   </style>
 </head>
 <body>
- 
-  
-  // student-status.html
-  <h1>Student Status</h1>
-  <table>
-    <tr>
-      <th>Student Name</th>
-      <th>Matric Number</th>
-      <th>Level</th>
-      <th>Status</th>
-    </tr>
-    <tbody id="status-table-body">
-    </tbody>
-  </table>
-  
+
+  <div class="container">
+    <h1 class="text-center">Student Status</h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Matric Number</th>
+          <th>Level</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="status-table-body">
+      </tbody>
+    </table>
+  </div>
+
   <script>
     fetch('/student-status')
       .then(response => response.json())
@@ -41,12 +60,17 @@
             <td>${student.studentName}</td>
             <td>${student.matricNumber}</td>
             <td>${student.level}</td>
-            <td>${student.status}</td>
+            <td class="${student.status === 'Pass' ? 'status-pass' : 'status-fail'}">${student.status}</td>
           `;
           tableBody.appendChild(row);
         });
       })
       .catch(error => console.error('Error fetching student status:', error));
-  </script>  
+  </script>
+
+  <!-- Bootstrap JS and dependencies (optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-  </html>
+</html>
