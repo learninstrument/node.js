@@ -90,8 +90,8 @@ app.post('/submit-assignment', upload.single('assignment'), (req, res) => {
                         console.log(`File deleted: ${req.file.path}`);
                     }
                 });
-            }, 2 * 60 * 1000); // 2 minutes in milliseconds
-            
+            }, 4 * 60 * 1000); // 4 minutes in milliseconds
+
             res.json({ success: true, message: 'Assignment submitted successfully' });
         });
     });
